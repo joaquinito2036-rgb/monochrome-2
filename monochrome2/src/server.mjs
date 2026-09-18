@@ -1,6 +1,7 @@
 import http from "node:http";
 import { searchInternetArchive, validateAdminManifest } from "./catalog.mjs";
 import { audioProfiles, videoCodecs, videoLadder } from "./profiles.mjs";
+import { searchYouTube } from "./youtube.mjs";
 
 const json = (res, status, data) => {
   res.writeHead(status, { "content-type": "application/json; charset=utf-8", "access-control-allow-origin": "*" });
@@ -22,6 +23,11 @@ export const server = http.createServer(async (req, res) => {
       const q = url.searchParams.get("q")?.trim();
       if (!q) return json(res, 400, { error: "q is required" });
       return json(res, 200, { items: await searchInternetArchive(q) });
+    }
+    if (req.method === "GET" && url.pathname === "/api/search/youtube") {
+      const q = url.searchParams.get("q")?.trim();
+      if (!q) return json(res, 400, { error: "q is required" });
+      return json(res, 200, { items: await searchYouTube(q) });
     }
     if (req.method === "POST" && url.pathname === "/api/catalog/manifest")
       return json(res, 202, { item: validateAdminManifest(await readJson(req)), status: "pending_rights_review" });
