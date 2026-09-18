@@ -14,18 +14,22 @@ This directory contains the lawful media-ingestion and transcoding foundation fo
 
 Internet Archive records may be indexed automatically only when their metadata contains an allowlisted reusable license. Public-domain and compatible Creative Commons material are supported.
 
+YouTube results are discovered through the official YouTube Data API and played with the official embedded player. YouTube streams are not downloaded, extracted, cached or transcoded. Reported delivery codecs or bitrates are not treated as reusable source files.
+
 RuTracker is represented by an **administrator-supplied manifest provider**. It does not scrape the site, bypass access controls, search for protected works or download torrents. Every entry must state its rights basis and be approved before a processing job can be created.
 
 ## Initial API
 
 ```bash
 cd monochrome2
+export YOUTUBE_API_KEY=your_google_api_key
 npm install
 npm test
 npm run dev
 ```
 
 - `GET /api/search/archive?q=...`
+- `GET /api/search/youtube?q=...`
 - `POST /api/catalog/manifest`
 - `GET /api/profiles`
 
